@@ -1,0 +1,50 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="https://sopot.stmsu.pg.pl/ws"
+           targetNamespace="https://sopot.stmsu.pg.pl/ws" elementFormDefault="qualified">
+
+    <xs:element name="getCoordinatesRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="x" type="xs:string"/>
+                <xs:element name="y" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getCoordinatesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="coordinates" type="tns:coordinates"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="coordinates">
+        <xs:sequence>
+            <xs:element name="x" type="xs:int"/>
+            <xs:element name="y" type="xs:int"/>
+            <xs:element name="lat" type="xs:float"/>
+            <xs:element name="lon" type="xs:float"/>
+            <xs:element name="latitude" type="xs:string"/>
+            <xs:element name="longitude" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getMapFragmentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="x1" type="xs:int"/>
+                <xs:element name="y1" type="xs:int"/>
+                <xs:element name="x2" type="xs:int"/>
+                <xs:element name="y2" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getMapFragmentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="imageBase64" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
