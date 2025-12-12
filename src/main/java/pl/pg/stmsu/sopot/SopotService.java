@@ -138,40 +138,52 @@ public class SopotService {
         return s;
     }
 
-    public Coordinates getCoordinates(String rawX, String rawY){
-        Object x = parseValue(rawX);
-        Object y = parseValue(rawY);
-        Coordinates newCoordinates = new Coordinates();
-        if(x instanceof Integer) {
-            newCoordinates.setX((Integer) x);
-            newCoordinates.setLon(pixelXToLongitude((Integer) x));
-            newCoordinates.setLongitude(decimalToDms(pixelXToLongitude((Integer) x),false));
+    public Coordinates getCoordinates(String rawX, String rawY) {
+        Object xVal = parseValue(rawX);
+        Object yVal = parseValue(rawY);
+
+        Coordinates c = new Coordinates();
+
+        float lon;
+        int px;
+
+        if (xVal instanceof Integer) {
+            px = (Integer) xVal;
+            lon = pixelXToLongitude(px);
+            c.setLongitude(decimalToDms(lon, false));
+        } else if (xVal instanceof Float) {
+            lon = (Float) xVal;
+            px = longitudeToPixelX(lon);
+            c.setLongitude(decimalToDms(lon, false));
+        } else {
+            lon = dmsToDecimal((String)xVal);
+            px = longitudeToPixelX(lon);
+            c.setLongitude((String)xVal);
         }
-        if(y instanceof Integer) {
-            newCoordinates.setY((Integer) y);
-            newCoordinates.setLat(pixelYToLatitude((Integer) y));
-            newCoordinates.setLatitude(decimalToDms(pixelYToLatitude((Integer) y),true));
+
+        c.setX(px);
+        c.setLon(lon);
+
+        float lat;
+        int py;
+
+        if (yVal instanceof Integer) {
+            py = (Integer) yVal;
+            lat = pixelYToLatitude(py);
+            c.setLatitude(decimalToDms(lat, true));
+        } else if (yVal instanceof Float) {
+            lat = (Float) yVal;
+            py = latitudeToPixelY(lat);
+            c.setLatitude(decimalToDms(lat, true));
+        } else {
+            lat = dmsToDecimal((String)yVal);
+            py = latitudeToPixelY(lat);
+            c.setLatitude((String)yVal);
         }
-        if(x instanceof Float) {
-            newCoordinates.setX(longitudeToPixelX((Float) x));
-            newCoordinates.setLon((Float) x);
-            newCoordinates.setLongitude(decimalToDms((Float) x,false));
-        }
-        if(y instanceof Float) {
-            newCoordinates.setY(latitudeToPixelY((Float) y));
-            newCoordinates.setLat((Float) y);
-            newCoordinates.setLatitude(decimalToDms((Float) y,true));
-        }
-        if(x instanceof String) {
-            newCoordinates.setX(longitudeToPixelX(dmsToDecimal((String) x)));
-            newCoordinates.setLon(dmsToDecimal((String) x));
-            newCoordinates.setLongitude((String) x);
-        }
-        if(y instanceof String) {
-            newCoordinates.setY(latitudeToPixelY(dmsToDecimal((String) y)));
-            newCoordinates.setLat(dmsToDecimal((String) y));
-            newCoordinates.setLatitude((String) y);
-        }
-        return newCoordinates;
+
+        c.setY(py);
+        c.setLat(lat);
+
+        return c;
     }
 }
